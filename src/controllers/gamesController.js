@@ -2,7 +2,6 @@
     const {Videogame, Genre} = require('../db.js')
 
 const axios = require('axios');
-const { json } = require('body-parser');
     exports.getGames = async (req,res,next)=> {
 
         try {
@@ -47,7 +46,6 @@ const { json } = require('body-parser');
                          {platform : {name : e}}
                     ) )
 
-                    console.log(resultObject)
                   gamesFiltrados.push(resultObject)
                 });
              }
@@ -138,8 +136,6 @@ const { json } = require('body-parser');
     exports.getGenres = async(req,res,next) => {
 
             const genres = await Genre.findAll()
-
-            console.log(genres)
 
             res.status(200).json(genres)
     }
