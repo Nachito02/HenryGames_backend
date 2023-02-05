@@ -39,44 +39,7 @@ const { Videogame, Genre } = sequelize.models;
 
   
 
-let load = false
 
-  
-async function precarga() {
-  Videogame.belongsToMany(Genre, {
-    through: 'videogame_genre',
-    foreignKey: 'videogameid',
-    otherKey: 'genreid'
-  })
-  
-  
-  Genre.belongsToMany(Videogame, {
-    through: 'videogame_genre',
-    foreignKey: 'genreid',
-    otherKey: 'videogameid'
-  })
-
-  if (load) {
-    return;
-  } 
-  try {
-    const respuesta = await axios.get(`https://api.rawg.io/api/genres?key=${process.env.API_KEY}`)
-    
-    respuesta.data.results.map(e=> 
-            Genre.create({
-                name: e.name
-            })
-        )
-  
-        console.log(respuesta.data.results)
-        load = true
-  }
-  catch(e){
-        console.log(e)
-  }
-  }
-  
-  precarga()
 
 
 module.exports = {
