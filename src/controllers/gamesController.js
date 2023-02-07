@@ -31,7 +31,9 @@ const axios = require('axios');
                     platforms: e.platforms,
                     background_image: e.background_image,
                     rating: e.rating,
-                    genres: e.genres
+                    genres: e.genres,
+                    released: e.released
+
                 }
                 return  objeto
              } ) 
@@ -64,24 +66,35 @@ const axios = require('axios');
           const videogame = await Videogame.create({
                 name : req.body.name,
                 description_raw: req.body.description,
-                relase_date: req.body.relase_date,
+                released: req.body.released,
                 rating : req.body.rating,
                 platforms: req.body.platforms,
                 background_image: req.body.background_image
             })
 
              // Busca los géneros
-             const genres = await Promise.all(req.body.genreName.map(async (name) => {
+             const genres = await Promise.all(req.body.genres.map(async (name) => {
                 const existingGenre = await Genre.findOne({ where: { name } });
                 return existingGenre;
               }));
 
             //asociar genero con video juego
             await videogame.addGenres(genres);
-        res.status(200).json({msg: 'Video juego agregado correctamente'});
-        } catch (error) {
+
+            const resultado = await Videogame.findOne({where: {name: req.body.name},include: [{
+                model: Genre,
+                attributes: ['name']
+              }]})
+
+            console.log(resultado)
+        res.status(200).json(resultado.dataValues);
+              
+    
+    } catch (error) {
             console.log(error)
         }
+
+
 
     }
 
@@ -100,10 +113,11 @@ const axios = require('axios');
                             platforms: respuesta.data.platforms,
                             background_image: respuesta.data.background_image,
                             rating: respuesta.data.rating,
-                            genres: respuesta.data.genres
+                            genres: respuesta.data.genres,
+                            released: respuesta.data.released
                         }
     
-    
+                        console.log(respuesta.data)
                          res.status(200).json(gamesFiltrados)
             } catch (error) {
                 console.log(error)
@@ -138,4 +152,18 @@ const axios = require('axios');
             const genres = await Genre.findAll()
 
             res.status(200).json(genres)
+    }
+
+
+    exports.searchGame = async (req,res,next) => {
+
+        const {game} = req.params
+       try {
+        const respuesta = await axios.get(`https://api.rawg.io/api/games?search=${game}&key=${process.env.API_KEY}`)
+        res.status(200).json(respuesta.data.results)
+        console.log(`https://api.rawg.io/api/games?search=${game}&key=${process.env.API_KEY}`)
+       } catch (error) {
+        console.log(error)
+       }
+        
     }

@@ -45,7 +45,7 @@ async function precarga() {
   try {
     const respuesta = await axios.get(`https://api.rawg.io/api/genres?key=${process.env.API_KEY}`)
     
-    respuesta.data.results.map(e=> 
+       respuesta.data.results.map(e=> 
             Genre.create({
                 name: e.name
             })

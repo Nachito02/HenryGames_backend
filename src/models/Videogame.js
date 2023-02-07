@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    relase_date: {
+    released: {
       type: DataTypes.STRING,
       allowNull: false,
     },
