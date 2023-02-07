@@ -37,9 +37,45 @@ const { Videogame, Genre } = sequelize.models;
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
+Videogame.belongsToMany(Genre, {
+  through: 'videogame_genre',
+  foreignKey: 'videogameid',
+  otherKey: 'genreid'
+})
+
+
+Genre.belongsToMany(Videogame, {
+  through: 'videogame_genre',
+  foreignKey: 'genreid',
+  otherKey: 'videogameid'
+})
+
+
+let load = false
+
+const precarga = async () => {
+
+  if (load) {
+    return;
+  } 
+  try {
+    const respuesta = await axios.get(`https://api.rawg.io/api/genres?key=${process.env.API_KEY}`)
+    
+    await respuesta.data.results.map(e=> 
+         Genre.create({
+                name: e.name
+            })
+        )
   
-
-
+        console.log(respuesta)
+        load = true
+  }
+  catch(e){
+        console.log(e)
+  }
+  }
+  
+precarga()
 
 
 module.exports = {

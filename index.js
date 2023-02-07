@@ -23,42 +23,7 @@ const { Videogame, Genre } = require('./src/db.js');
 const  axios = require('axios')
 //precargar base de datos
 
-let load = false
 
-async function precarga() {
-  Videogame.belongsToMany(Genre, {
-    through: 'videogame_genre',
-    foreignKey: 'videogameid',
-    otherKey: 'genreid'
-  })
-  
-  
-  Genre.belongsToMany(Videogame, {
-    through: 'videogame_genre',
-    foreignKey: 'genreid',
-    otherKey: 'videogameid'
-  })
-
-  if (load) {
-    return;
-  } 
-  try {
-    const respuesta = await axios.get(`https://api.rawg.io/api/genres?key=${process.env.API_KEY}`)
-    
-       respuesta.data.results.map(e=> 
-            Genre.create({
-                name: e.name
-            })
-        )
-  
-        load = true
-  }
-  catch(e){
-        console.log(e)
-  }
-  }
-  
-  precarga()
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
