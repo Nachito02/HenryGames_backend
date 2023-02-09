@@ -23,7 +23,7 @@ require('dotenv').config()
 
 // Syncing all the models at once.
 conn.sync({ force: false }).then(() => {
-  server.listen(process.env.PGPORT, () => {
-    console.log('%s listening at ', process.env.PGPORT); // eslint-disable-line no-console
+  server.listen(process.env.PORT, () => {
+    console.log('%s listening at ', process.env.PORT); // eslint-disable-line no-console
   });
 });
