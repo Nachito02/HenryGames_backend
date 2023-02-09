@@ -1,6 +1,6 @@
 
     const {Videogame, Genre} = require('../db.js')
-
+    require('dotenv').config()
 const axios = require('axios');
     exports.getGames = async (req,res,next)=> {
 
