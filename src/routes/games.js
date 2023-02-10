@@ -19,6 +19,8 @@ router.post('/videogames', gamesController.addGame)
 router.get('/genres', gamesController.getGenres)
 
 router.get('/videogame/search/:game', gamesController.searchGame)
+router.delete('/videogame/:id', gamesController.deleteGame)
+
 
 
 module.exports = router;

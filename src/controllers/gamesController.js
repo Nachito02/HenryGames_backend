@@ -86,7 +86,6 @@ const axios = require('axios');
                 attributes: ['name']
               }]})
 
-            console.log(resultado)
         res.status(200).json(resultado.dataValues);
               
     
@@ -117,7 +116,6 @@ const axios = require('axios');
                             released: respuesta.data.released
                         }
     
-                        console.log(respuesta.data)
                          res.status(200).json(gamesFiltrados)
             } catch (error) {
                 console.log(error)
@@ -167,3 +165,50 @@ const axios = require('axios');
        }
         
     }
+
+
+        exports.deleteGame = async(req,res,next) => { 
+
+            const {id} = req.params
+
+            try {
+
+                const game = await Videogame.findOne({ where: {
+                    id
+                  },
+                  include: [{
+                    model: Genre,
+
+                    through: {
+                        where: {
+                            videogameid: id
+                        }
+                    }
+
+                  }]})
+
+                
+
+                   const response = await Videogame.destroy({
+                        where: {
+                            id: id
+                        },
+                        include: [
+                            {
+                                model: Genre,
+                                through: {
+                                    where: {
+                                        videogameid: id
+                                    }
+                                }
+
+                            }
+                        ]
+                    })
+
+                        console.log(game.dataValues)
+                    res.status(200).json(game.dataValues)
+            } catch(error) {
+                console.log(error)
+            }
+         }
