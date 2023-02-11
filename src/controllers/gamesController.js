@@ -206,7 +206,6 @@ const axios = require('axios');
                         ]
                     })
 
-                        console.log(game.dataValues)
                     res.status(200).json(game.dataValues)
             } catch(error) {
                 console.log(error)
