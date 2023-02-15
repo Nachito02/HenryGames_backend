@@ -159,7 +159,6 @@ const axios = require('axios');
        try {
         const respuesta = await axios.get(`https://api.rawg.io/api/games?search=${game}&key=${process.env.API_KEY}`)
         res.status(200).json(respuesta.data.results)
-        console.log(`https://api.rawg.io/api/games?search=${game}&key=${process.env.API_KEY}`)
        } catch (error) {
         console.log(error)
        }
